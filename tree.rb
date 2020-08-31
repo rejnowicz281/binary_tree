@@ -137,4 +137,27 @@ class Tree
       end 
     end 
   end
-end 
+
+  def level_order
+    queue = [@root_node]
+    traversed = []
+
+    until queue == []
+      if queue[0].has_no_children?
+        traversed << queue[0].root 
+        queue.shift
+      elsif queue[0].has_only_one_child?
+        queue.push(queue[0].only_child)
+        traversed << queue[0].root 
+        queue.shift
+      elsif queue[0].has_two_children?
+        queue.push(queue[0].left)
+        queue.push(queue[0].right)
+        traversed << queue[0].root
+        queue.shift
+      end 
+    end
+
+    traversed
+  end 
+end
