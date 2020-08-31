@@ -24,4 +24,35 @@ class Tree
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.root}"
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
+
+  def find(value, find_parent = false)
+    return if value == nil 
+
+    current = @root_node
+    loop do 
+      if value > current.root 
+        if current.right.root == value
+          return current if find_parent == true 
+          return current.right
+        else
+          current = current.right
+        end
+      else
+        if current.left.root == value
+          return current if find_parent == true
+          return current.left
+        else
+          current = current.left 
+        end 
+      end 
+    end 
+  end 
+
+  def node_exists?(value)
+    begin 
+      find(value).root == value
+    rescue 
+      false
+    end 
+  end    
 end 
