@@ -79,4 +79,62 @@ class Tree
     current.left = Node.new(value)  if value < current.root
     current.right = Node.new(value) if value > current.root
   end
+
+  def delete_root 
+    if @root_node == nil 
+      return puts "Root node doesn't exist."
+    elsif @root_node.has_no_children?
+      @root_node = nil
+    elsif @root_node.has_only_one_child?
+      @root_node = @root_node.only_child
+    elsif @root_node.has_two_children?
+      if @root_node.right.has_left?
+        current = @root_node.right.left
+
+        current = current.left until current.has_no_left?
+
+        copy = current.root 
+        delete(copy)
+        @root_node.root = copy 
+      elsif @root_node.right.has_no_children? || @root_node.right.has_only_right?
+        copy = @root_node.right.root 
+        delete(copy)
+        @root_node.root = copy
+      end 
+    end 
+  end 
+
+  def delete(value)
+    return if value == nil
+    return puts "Can't delete, root node doesn't exist." if @root_node == nil 
+    return delete_root if @root_node.root == value
+    return puts "Can't delete #{value}, doesn't exist in the tree." unless node_exists?(value)
+
+    node_with_value = find(value)
+    node_before = find(value, find_parent = true)
+    
+    if node_with_value.has_no_children?
+      node_before.left = nil  if node_before.left == node_with_value
+      node_before.right = nil if node_before.right == node_with_value
+    elsif node_with_value.has_only_one_child?
+      node_before.left = node_with_value.only_child  if node_before.left == node_with_value
+      node_before.right = node_with_value.only_child if node_before.right == node_with_value
+    elsif node_with_value.has_two_children?
+      if node_with_value.right.has_left?
+          current = node_with_value.right.left 
+
+          current = current.left until current.has_no_left?
+
+          copy = current.root 
+          delete(copy)
+          node_before.right.root = copy if node_before.right.root == value 
+          node_before.left.root = copy  if node_before.left.root == value 
+      elsif node_with_value.right.has_no_children? || node_with_value.right.has_only_right?
+        copy = node_with_value.right.root 
+        delete(copy)
+        node_before.right.root = copy if node_before.right.root == value
+        node_before.left.root = copy  if node_before.left.root == value
+      end 
+    end 
+  end
 end 
