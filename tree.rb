@@ -17,4 +17,11 @@ class Tree
     mid = (start + ennd)/2
     Node.new(array[mid], build_tree(array, start, mid - 1), build_tree(array, mid + 1, ennd))
   end
+
+  def pretty_print(node = @root_node, prefix = '', is_left = true)
+    return puts "nil" if @root_node == nil
+    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.root}"
+    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
+  end
 end 
