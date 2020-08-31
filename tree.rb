@@ -61,7 +61,7 @@ class Tree
   end    
 
   def insert(value)
-    return if value == nil
+    return puts "Can't insert strings." if value.is_a? String || value == false || value == true || value == nil
     return @root_node = Node.new(value) if @root_node == nil
     return puts "Can't insert duplicates. #{value} already in the tree." if node_exists?(value) || @root_node.root == value
 
@@ -105,20 +105,20 @@ class Tree
   end 
 
   def delete(value)
-    return if value == nil
+    return if value.is_a? String || value == false || value == true || value == nil
     return puts "Can't delete, root node doesn't exist." if @root_node == nil 
     return delete_root if @root_node.root == value
     return puts "Can't delete #{value}, doesn't exist in the tree." unless node_exists?(value)
 
     node_with_value = find(value)
-    node_before = find(value, find_parent = true)
+    parent_node = find(value, find_parent = true)
     
     if node_with_value.has_no_children?
-      node_before.left = nil  if node_before.left == node_with_value
-      node_before.right = nil if node_before.right == node_with_value
+      parent_node.left = nil  if parent_node.left == node_with_value
+      parent_node.right = nil if parent_node.right == node_with_value
     elsif node_with_value.has_only_one_child?
-      node_before.left = node_with_value.only_child  if node_before.left == node_with_value
-      node_before.right = node_with_value.only_child if node_before.right == node_with_value
+      parent_node.left = node_with_value.only_child  if parent_node.left == node_with_value
+      parent_node.right = node_with_value.only_child if parent_node.right == node_with_value
     elsif node_with_value.has_two_children?
       if node_with_value.right.has_left?
           current = node_with_value.right.left 
@@ -127,13 +127,13 @@ class Tree
 
           copy = current.root 
           delete(copy)
-          node_before.right.root = copy if node_before.right.root == value 
-          node_before.left.root = copy  if node_before.left.root == value 
+          parent_node.right.root = copy if parent_node.right.root == value 
+          parent_node.left.root = copy  if parent_node.left.root == value 
       elsif node_with_value.right.has_no_children? || node_with_value.right.has_only_right?
         copy = node_with_value.right.root 
         delete(copy)
-        node_before.right.root = copy if node_before.right.root == value
-        node_before.left.root = copy  if node_before.left.root == value
+        parent_node.right.root = copy if parent_node.right.root == value
+        parent_node.left.root = copy  if parent_node.left.root == value
       end 
     end 
   end
@@ -159,5 +159,26 @@ class Tree
     end
 
     traversed
+  end 
+
+  def inorder(node = @root_node)
+    return if node == nil 
+    inorder(node.left)
+    print "#{node.root} " 
+    inorder(node.right)
+  end 
+
+  def preorder(node = @root_node)
+    return if node == nil
+    print "#{node.root} "  
+    preorder(node.left)
+    preorder(node.right)
+  end 
+
+  def postorder(node = @root_node)
+    return if node == nil 
+    postorder(node.left)
+    postorder(node.right)
+    print "#{node.root} " 
   end 
 end
