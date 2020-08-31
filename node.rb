@@ -42,4 +42,14 @@ class Node
   def has_no_right? 
     right == nil
   end   
+
+  def only_child 
+    if has_only_one_child? 
+      if has_left? 
+        left 
+      elsif has_right? 
+        right
+      end 
+    end 
+  end 
 end
