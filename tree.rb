@@ -28,23 +28,27 @@ class Tree
   def find(value, find_parent = false)
     return if value == nil 
 
-    current = @root_node
-    loop do 
-      if value > current.root 
-        if current.right.root == value
-          return current if find_parent == true 
-          return current.right
+    begin
+      current = @root_node
+      loop do 
+        if value > current.root 
+          if current.right.root == value
+            return current if find_parent == true 
+            return current.right
+          else
+            current = current.right
+          end
         else
-          current = current.right
-        end
-      else
-        if current.left.root == value
-          return current if find_parent == true
-          return current.left
-        else
-          current = current.left 
+          if current.left.root == value
+            return current if find_parent == true
+            return current.left
+          else
+            current = current.left 
+          end 
         end 
       end 
+    rescue 
+      false
     end 
   end 
 
