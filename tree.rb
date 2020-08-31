@@ -59,4 +59,24 @@ class Tree
       false
     end 
   end    
+
+  def insert(value)
+    return if value == nil
+    return @root_node = Node.new(value) if @root_node == nil
+    return puts "Can't insert duplicates. #{value} already in the tree." if node_exists?(value) || @root_node.root == value
+
+    current = @root_node
+    loop do 
+      if value > current.root
+        break if current.right == nil 
+        current = current.right 
+      else
+        break if current.left == nil
+        current = current.left
+      end
+    end
+    
+    current.left = Node.new(value)  if value < current.root
+    current.right = Node.new(value) if value > current.root
+  end
 end 
