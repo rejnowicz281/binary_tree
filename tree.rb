@@ -26,6 +26,7 @@ class Tree
   end
 
   def find(value, find_parent = false)
+    return @root_node if @root_node.root == value
     return if value == nil 
 
     begin
@@ -181,4 +182,15 @@ class Tree
     postorder(node.right)
     print "#{node.root} " 
   end 
+  
+  def height(node)
+    return -1 if node == nil 
+    node = find(node) unless node.is_a?(Node)
+    return "Can't check height, node doesn't exist." unless node_exists?(node) || node != false
+
+    left = height(node.left)
+    right = height(node.right)
+
+    left > right ? left + 1 : right + 1
+  end
 end
