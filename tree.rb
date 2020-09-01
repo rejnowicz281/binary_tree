@@ -184,6 +184,7 @@ class Tree
   end 
   
   def height(node)
+    return 0 if @root_node == nil
     return -1 if node == nil 
     node = find(node) unless node.is_a?(Node)
     return "Can't check height, node doesn't exist." unless node_exists?(node) || node != false
@@ -195,6 +196,7 @@ class Tree
   end
 
   def depth(node, current_node = @root_node, count = 1)
+    return 0 if @root_node == nil
     node = find(node) if node_exists?(node) 
     return "Can't check height, node doesn't exist." if node == false
     return count if current_node.root == node.root
