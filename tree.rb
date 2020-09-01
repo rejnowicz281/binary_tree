@@ -193,4 +193,16 @@ class Tree
 
     left > right ? left + 1 : right + 1
   end
+
+  def depth(node, current_node = @root_node, count = 1)
+    node = find(node) if node_exists?(node) 
+    return "Can't check height, node doesn't exist." if node == false
+    return count if current_node.root == node.root
+        
+    if node.root < current_node.root
+      depth(node, current_node.left, count + 1)
+    else
+      depth(node, current_node.right, count + 1)
+    end
+  end
 end
