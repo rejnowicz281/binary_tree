@@ -220,4 +220,11 @@ class Tree
       (right - left) <= 1 && balanced?(node.left) && balanced?(node.right)
     end
   end 
+
+  def rebalance 
+    unless balanced?
+      level_order_sorted = level_order.sort 
+      @root_node = build_tree(level_order_sorted, 0, level_order_sorted.length - 1)
+    end 
+  end 
 end
