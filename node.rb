@@ -1,8 +1,8 @@
 class Node 
-    attr_accessor :data, :left, :right 
+    attr_accessor :root, :left, :right 
 
-    def initialize(data,left = nil,right = nil)
-        @data = data
+    def initialize(root,left = nil,right = nil)
+        @root = root
         @left = left 
         @right = right
     end 
