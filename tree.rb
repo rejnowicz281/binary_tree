@@ -84,20 +84,20 @@ class Tree
   def delete_root 
     if @root_node == nil 
       return puts "Root node doesn't exist."
-    elsif @root_node.has_no_children?
+    elsif @root_node.is_leaf_node?
       @root_node = nil
-    elsif @root_node.has_only_one_child?
+    elsif @root_node.has_only_right? || @root_node.has_only_left?
       @root_node = @root_node.only_child
-    elsif @root_node.has_two_children?
+    else
       if @root_node.right.has_left?
         current = @root_node.right.left
 
-        current = current.left until current.has_no_left?
+        current = current.left while current.has_left?
 
         copy = current.root 
         delete(copy)
         @root_node.root = copy 
-      elsif @root_node.right.has_no_children? || @root_node.right.has_only_right?
+      elsif @root_node.right.is_leaf_node? || @root_node.right.has_only_right?
         copy = @root_node.right.root 
         delete(copy)
         @root_node.root = copy
@@ -114,7 +114,7 @@ class Tree
     node_with_value = find(value)
     parent_node = find(value, find_parent = true)
     
-    if node_with_value.has_no_children?
+    if node_with_value.is_leaf_node?
       parent_node.left = nil  if parent_node.left == node_with_value
       parent_node.right = nil if parent_node.right == node_with_value
     elsif node_with_value.has_only_one_child?
@@ -130,7 +130,7 @@ class Tree
           delete(copy)
           parent_node.right.root = copy if parent_node.right.root == value 
           parent_node.left.root = copy  if parent_node.left.root == value 
-      elsif node_with_value.right.has_no_children? || node_with_value.right.has_only_right?
+      elsif node_with_value.right.is_leaf_node? || node_with_value.right.has_only_right?
         copy = node_with_value.right.root 
         delete(copy)
         parent_node.right.root = copy if parent_node.right.root == value
@@ -144,14 +144,14 @@ class Tree
     traversed = []
 
     until queue == []
-      if queue[0].has_no_children?
+      if queue[0].is_leaf_node?
         traversed << queue[0].root 
         queue.shift
-      elsif queue[0].has_only_one_child?
+      elsif queue[0].has_only_right? || queue[0].has_only_left?
         queue.push(queue[0].only_child)
         traversed << queue[0].root 
         queue.shift
-      elsif queue[0].has_two_children?
+      else
         queue.push(queue[0].left)
         queue.push(queue[0].right)
         traversed << queue[0].root
